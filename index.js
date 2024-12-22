@@ -44,13 +44,37 @@ function togglePlay(){
     }
 }
 
+function playMusic(){
+    isPlaying = true;
+    // Mudando o icone do botão "Play"
+    playBtn.classList.replace('fa-play', 'fa-pause');
+    // Definir o título do botão
+    playBtn.setAttribute('title', 'pause');
+    music.play();
+}
 
+function pauseMusic(){
+    isPlaying = false;
+    // Mudando o icone do botão "Pause"
+    playBtn.classList.replace('fa-pause', 'fa-play');
+    // Definir o título do botão
+    playBtn.setAttribute('title', 'play');
+    music.pause();
+}
 
+function loadMusic(song){
+    music.src = song.path;
+    title.textContent = song.displayName;
+    artist.textContent = song.artist;
+    image.srcc = song.cover;
+    background.src = song.cover;
+}
 
-
-
-
-
+function changeMusic(direction){
+    musicIndex = (musicIndex + direction + songs.length) % songs.length;
+    loadMusic(songs[musicIndex]);
+    playMusic();
+}
 
 
 
