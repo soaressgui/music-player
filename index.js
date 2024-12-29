@@ -1,8 +1,8 @@
 const image = document.getElementById('cover'),
 title = document.getElementById('music-title'),
 artist = document.getElementById('music-artist'),
-currentTime = document.getElementById('current-time'),
-duration = document.getElementById('duration'),
+currentTimeEl = document.getElementById('current-time'),
+durationEl = document.getElementById('duration'),
 progress = document.getElementById('progress'),
 playerProgress = document.getElementById('player-progress'),
 previousBtn = document.getElementByI('prev'),
@@ -76,7 +76,15 @@ function changeMusic(direction){
     playMusic();
 }
 
+function updateProgressBar(){
+    const {duration, currentTime} = music;
+    const progressPercent = (currentTime / duration ) * 100;
+    progress.style.width = `${progressPercent}%`;
 
+    const formatTime = (time) => String(Math.floor(time)).padStart(2,'0');
+    durationEl.textContent = `${duration / 60}:${formatTime(duration % 60)}`;
+    currentTimeEl.textContent = `${currentTime / 60}:${formatTime(currentTime % 60)}`;
+}
 
 
 
