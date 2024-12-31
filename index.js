@@ -5,10 +5,10 @@ currentTimeEl = document.getElementById('current-time'),
 durationEl = document.getElementById('duration'),
 progress = document.getElementById('progress'),
 playerProgress = document.getElementById('player-progress'),
-previousBtn = document.getElementByI('prev'),
-nextBtn = document.getElementByI('next'),
-playBtn = document.getElementByI('play'),
-backgrpoung = document.getElementByI('bg-img');
+previousBtn = document.getElementById('prev'),
+nextBtn = document.getElementById('next'),
+playBtn = document.getElementById('play'),
+background = document.getElementById('bg-img');
 
 const music = new Audio();
 
@@ -49,7 +49,7 @@ function playMusic(){
     // Mudando o icone do botão "Play"
     playBtn.classList.replace('fa-play', 'fa-pause');
     // Definir o título do botão
-    playBtn.setAttribute('title', 'pause');
+    playBtn.setAttribute('title', 'Pause');
     music.play();
 }
 
@@ -58,7 +58,7 @@ function pauseMusic(){
     // Mudando o icone do botão "Pause"
     playBtn.classList.replace('fa-pause', 'fa-play');
     // Definir o título do botão
-    playBtn.setAttribute('title', 'play');
+    playBtn.setAttribute('title', 'Play');
     music.pause();
 }
 
@@ -66,7 +66,7 @@ function loadMusic(song){
     music.src = song.path;
     title.textContent = song.displayName;
     artist.textContent = song.artist;
-    image.srcc = song.cover;
+    image.src = song.cover;
     background.src = song.cover;
 }
 
@@ -82,9 +82,22 @@ function updateProgressBar(){
     progress.style.width = `${progressPercent}%`;
 
     const formatTime = (time) => String(Math.floor(time)).padStart(2,'0');
-    durationEl.textContent = `${duration / 60}:${formatTime(duration % 60)}`;
-    currentTimeEl.textContent = `${currentTime / 60}:${formatTime(currentTime % 60)}`;
+    durationEl.textContent = `${formatTime(duration / 60)}:${formatTime(duration % 60)}`;
+    currentTimeEl.textContent = `${formatTime(currentTime / 60)}:${formatTime(currentTime % 60)}`;
 }
 
 
+function setProgressBar(e){
+    const width = playerProgress.clientWidth;
+    const clickX = e.offsetX;
+    music.currentTime = (clickX / width) * music.duration;
+}
 
+playBtn.addEventListener('click', togglePlay);
+previousBtn.addEventListener('click', () => changeMusic(-1));
+nextBtn.addEventListener('click', () => changeMusic(1));
+music.addEventListener('ended', () => changeMusic(1));
+music.addEventListener('timeupdate', updateProgressBar);
+playerProgress.addEventListener('click', setProgressBar);
+
+loadMusic(songs[musicIndex]);
